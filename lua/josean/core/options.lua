@@ -37,3 +37,15 @@ opt.splitbelow = true -- split horizontal window to the bottom
 
 -- turn off swapfile
 opt.swapfile = false
+
+-- persistent undo
+opt.undofile = true -- save undo history
+opt.undodir = os.getenv("HOME") .. "/.vim/undodir" -- set undo directory
+opt.undolevels = 10000 -- maximum number of changes that can be undone
+opt.undoreload = 10000 -- maximum number lines to save for undo on a buffer reload
+
+-- remember last edit place
+vim.cmd([[
+  autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | execute "normal! g`\"" | endif
+]])
+
