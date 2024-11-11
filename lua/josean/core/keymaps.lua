@@ -2,6 +2,14 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap -- for conciseness
 
+-- Search yanked text in codebase
+keymap.set("n", "\\", function()
+    local yanked_text = vim.fn.getreg('"')
+    require('telescope.builtin').live_grep({
+        default_text = yanked_text,
+    })
+end, { desc = "Search yanked text in codebase" })
+
 -- File explorer in vertical split
 keymap.set("n", "<leader>f", function()
     -- Calculate the width (approximately 1/4 of total width)
