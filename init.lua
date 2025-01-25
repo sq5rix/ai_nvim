@@ -21,7 +21,7 @@ local function create_margins()
 
   vim.cmd("wincmd l")
   vim.cmd("wincmd l")
-  vim.cmd("vertical resize 50")
+  vim.cmd("vertical resize 70")
   vim.cmd("enew")
   vim.cmd("wincmd h")
   vim.cmd("wincmd h")
@@ -35,7 +35,14 @@ local function create_margins()
     vim.api.nvim_win_set_option(win, "relativenumber", false)
     vim.api.nvim_win_set_option(win, "wrap", true)
   end
+
+  -- Enable spell checking for middle window
+  vim.opt.spell = true
+  vim.opt.spelllang = "en_us"
+
   vim.cmd("wincmd l")
+  vim.opt.laststatus = 2 -- Always show status line
+  vim.opt.statusline = "words: %{wordcount().words}"
 end
 
-vim.api.nvim_create_user_command("CreateMargins", create_margins, {})
+vim.api.nvim_create_user_command("WritingMode", create_margins, {})
