@@ -36,11 +36,27 @@ local function create_margins()
     vim.api.nvim_win_set_option(win, "wrap", true)
   end
 
-  -- Enable spell checking for middle window
+  -- Go to left window and remove all highlights including cursor
+  vim.cmd("wincmd h")
+  vim.cmd("wincmd h")
+  vim.api.nvim_win_set_option(0, "winhl", "Normal:NonText,CursorLine:NonText,CursorColumn:NonText")
+  vim.wo.cursorline = false
+  vim.wo.cursorcolumn = false
+  vim.opt.guicursor = "n:block-NonText"
+
+  -- Go to right window and remove all highlights including cursor
+  vim.cmd("wincmd l")
+  vim.cmd("wincmd l")
+  vim.api.nvim_win_set_option(0, "winhl", "Normal:NonText,CursorLine:NonText,CursorColumn:NonText")
+  vim.wo.cursorline = false
+  vim.wo.cursorcolumn = false
+  vim.opt.guicursor = "n:block-NonText"
+
+  -- Return to middle window and set its options
+  vim.cmd("wincmd h")
   vim.opt.spell = true
   vim.opt.spelllang = "en_us"
 
-  vim.cmd("wincmd l")
   vim.opt.laststatus = 0 -- Always show the status line
 end
 
