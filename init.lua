@@ -41,8 +41,7 @@ local function create_margins()
   vim.opt.spelllang = "en_us"
 
   vim.cmd("wincmd l")
-  vim.opt.laststatus = 2 -- Always show status line
-  vim.opt.statusline = "words: %{wordcount().words}"
+  vim.opt.laststatus = 0 -- Always show the status line
 end
 
 vim.api.nvim_create_user_command("WritingMode", create_margins, {})
