@@ -20,10 +20,8 @@ local function create_margins()
   vim.cmd("wincmd l")
 
   vim.cmd("wincmd l")
-  vim.cmd("wincmd l")
   vim.cmd("vertical resize 70")
   vim.cmd("enew")
-  vim.cmd("wincmd h")
   vim.cmd("wincmd h")
 
   -- Hide split lines
@@ -34,10 +32,10 @@ local function create_margins()
     vim.api.nvim_win_set_option(win, "number", false)
     vim.api.nvim_win_set_option(win, "relativenumber", false)
     vim.api.nvim_win_set_option(win, "wrap", true)
+    vim.api.nvim_win_set_option(win, "linebreak", true)
   end
 
   -- Go to left window and remove all highlights including cursor
-  vim.cmd("wincmd h")
   vim.cmd("wincmd h")
   vim.api.nvim_win_set_option(0, "winhl", "Normal:NonText,CursorLine:NonText,CursorColumn:NonText")
   vim.wo.cursorline = false
@@ -54,10 +52,18 @@ local function create_margins()
 
   -- Return to middle window and set its options
   vim.cmd("wincmd h")
+  vim.wo.cursorline = false
+  vim.wo.cursorcolumn = false
+
   vim.opt.spell = true
   vim.opt.spelllang = "en_us"
+
+  -- Disable search highlighting
+  vim.opt.hlsearch = false
+  vim.cmd("nohlsearch")
 
   vim.opt.laststatus = 0 -- Always show the status line
 end
 
 vim.api.nvim_create_user_command("WritingMode", create_margins, {})
+vim.api.nvim_set_keymap("n", "<leader>w", ":echo wordcount().words<CR>", { noremap = true, silent = true })
