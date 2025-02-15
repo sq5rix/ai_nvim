@@ -26,18 +26,21 @@ return {
       python = {
         -- Python-specific settings
         indent = 4,
-        wrap = true,
+        wrap = false,
         system_prompt = "Python scripting environment",
         temperature = 0.2,
         max_tokens = 3072,
       },
       markdown = {
-        -- Markdown-specific settings
+        -- Markdown-specific settings for Gemini
+        provider = "google",
+        endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?",
+        timeout = 30000, -- timeout in milliseconds
         wrap = true,
         spell = true,
-        system_prompt = "You are talented writer. You write in past tense, in first person. You are mixing serious and casual tone",
-        temperature = 0.3,
-        max_tokens = 1024,
+        system_prompt = "You are a talented writer. You write in past tense, in first person. You mix serious and casual tones.",
+        temperature = 0.7,
+        max_tokens = 50000,
       },
     },
   },
