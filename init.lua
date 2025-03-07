@@ -5,7 +5,7 @@ require("josean.lazy")
 local function create_window_layout(left_margin_size, middle_size, right_margin_size)
   -- Default values if not provided
   left_margin_size = left_margin_size or 20
-  middle_size = middle_size or 70
+  middle_size = middle_size or 60
   right_margin_size = right_margin_size or 20
 
   -- Create splits
@@ -29,22 +29,25 @@ local function create_window_layout(left_margin_size, middle_size, right_margin_
   vim.cmd("vertical resize " .. middle_size)
 end
 
--- Create the four-window layout
+-- Create the five-window layout
 local function create_window_layout2(
   left_margin_size,
   middle_left_size,
   middle_gap_size,
   middle_right_size,
-  right_margin_size
+  right_gap_size
 )
   -- Default values if not provided
-  left_margin_size = left_margin_size or 15
-  right_margin_size = right_margin_size or 15
+  left_margin_size = left_margin_size or 5
   middle_left_size = middle_left_size or 40
   middle_gap_size = middle_gap_size or 10
   middle_right_size = middle_right_size or 40
+  right_gap_size = right_gap_size or 10
 
-  -- Create splits
+  -- Ensure sizes add up to 100%
+
+  -- Create splits (need 4 splits for 5 panes)
+  vim.cmd("vsplit")
   vim.cmd("vsplit")
   vim.cmd("vsplit")
   vim.cmd("vsplit")
@@ -69,9 +72,9 @@ local function create_window_layout2(
   vim.cmd("wincmd l")
   vim.cmd("vertical resize " .. middle_right_size)
 
-  -- Move to rightmost window and set up right margin
+  -- Move to rightmost window and set up right panel
   vim.cmd("wincmd l")
-  vim.cmd("vertical resize " .. right_margin_size)
+  vim.cmd("vertical resize " .. right_gap_size)
   vim.cmd("enew")
 
   -- Go back to middle-left window to be consistent with original function
@@ -235,26 +238,20 @@ local function ai(additional_prompt)
   vim.api.nvim_feedkeys("a" .. generated_text .. "<Esc>", "n", false)
 end
 
--- Main function to create writing mode with 4 panes
-local function create_margins2(
-  left_margin_size,
-  middle_left_size,
-  middle_gap_size,
-  middle_right_size,
-  right_margin_size
-)
+-- Main function to create writing mode with 5 panes
+local function create_margins2(left_margin_size, middle_left_size, middle_gap_size, middle_right_size, right_gap_size)
   -- Store current buffer number
   local current_buf = vim.api.nvim_get_current_buf()
 
   -- Default values if not provided
   left_margin_size = left_margin_size or 15
-  middle_left_size = middle_left_size or 40
-  middle_gap_size = middle_gap_size or 10
-  middle_right_size = middle_right_size or 40
-  right_margin_size = right_margin_size or 15
+  middle_left_size = middle_left_size or 30
+  middle_gap_size = middle_gap_size or 10 -- Make panel 3 small (about 10%)
+  middle_right_size = middle_right_size or 30
+  right_size = right_size or 15
 
   -- Create and configure windows
-  create_window_layout2(left_margin_size, middle_left_size, middle_gap_size, middle_right_size, right_margin_size)
+  create_window_layout2(left_margin_size, middle_left_size, middle_gap_size, middle_right_size, right_size)
   configure_window_appearance()
 
   -- Start from the leftmost window and configure each window in order
@@ -278,9 +275,9 @@ local function create_margins2(
   vim.cmd("wincmd l")
   configure_middle_window()
 
-  -- Move to right margin
+  -- Move to right panel - configure as text panel, not margin
   vim.cmd("wincmd l")
-  configure_margin_window()
+  configure_middle_window() -- Using middle window config instead of margin config
 
   -- Set cursor appearance
   vim.opt.guicursor = "n:block-NonText"
@@ -292,19 +289,11 @@ end
 
 vim.api.nvim_create_user_command("AI", ai, {})
 vim.api.nvim_create_user_command("WritingMode", function()
-  create_margins(20, 70, 20) -- Default sizes for 3-pane layout
+  create_margins(20, 60, 20) -- Default sizes for 3-pane layout
 end, {})
 
 vim.api.nvim_create_user_command("WritingMode2", function()
-  create_margins2(15, 40, 10, 40, 15) -- Default sizes for 4-pane layout
+  create_margins2(5, 40, 15, 40, 5) -- Default sizes for 5-pane layout (100% total)
 end, {})
 
--- Add commands with different size presets
-vim.api.nvim_create_user_command("WritingModeWide", function()
-  create_margins(15, 80, 15) -- Wider middle pane
-end, {})
-
-vim.api.nvim_create_user_command("WritingMode2Wide", function()
-  create_margins2(10, 45, 10, 45, 10) -- Wider text panes
-end, {})
 vim.api.nvim_set_keymap("n", "<leader>w", ":echo wordcount().words<CR>", { noremap = true, silent = true })
