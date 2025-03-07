@@ -6,31 +6,7 @@ return {
   opts = {
     -- add any opts here
     -- for example
-    provider = "openai",
-    openai = {
-      endpoint = "https://api.openai.com/v1",
-      model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
-      timeout = 30000, -- timeout in milliseconds
-      temperature = 0, -- adjust if needed
-      max_tokens = 4096,
-    },
     filetype_configs = {
-      lua = {
-        -- Lua-specific settings
-        indent = 2,
-        wrap = false,
-        system_prompt = "Lua development environment",
-        temperature = 0.1,
-        max_tokens = 2048,
-      },
-      python = {
-        -- Python-specific settings
-        indent = 4,
-        wrap = false,
-        system_prompt = "Python scripting environment",
-        temperature = 0.2,
-        max_tokens = 3072,
-      },
       markdown = {
         -- Markdown-specific settings for Gemini
         provider = "google",
